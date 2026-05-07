@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sadiq Portfolio</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#050505; color:white; overflow-x:hidden; }
+
+.nav { display:flex; justify-content:space-between; align-items:center; padding:20px 60px; position:fixed; width:100%; backdrop-filter:blur(20px); background:rgba(0,0,0,0.5); z-index:100; }
+.nav-left { font-weight:700; font-size:18px; letter-spacing:1px; }
+.nav-center { display:flex; gap:32px; }
+.nav-center a { color:#aaa; text-decoration:none; font-size:14px; cursor:pointer; transition:color 0.2s; letter-spacing:0.5px; }
+.nav-center a:hover, .nav-center a.active { color:white; }
+.menu-btn { background:none; border:none; color:white; cursor:pointer; font-size:22px; }
+
+.menu-panel { position:fixed; right:0; top:0; width:300px; height:100vh; background:#0d0d0d; border-left:1px solid #1a1a1a; padding:40px; z-index:200; transform:translateX(100%); transition:transform 0.45s cubic-bezier(0.77,0,0.18,1); }
+.menu-panel.open { transform:translateX(0); }
+.close-btn { background:none; border:none; color:white; cursor:pointer; font-size:24px; }
+.menu-links { display:flex; flex-direction:column; gap:22px; margin-top:50px; }
+.menu-links a { color:white; text-decoration:none; font-size:18px; opacity:0.7; transition:opacity 0.2s; }
+.menu-links a:hover { opacity:1; }
+
+.page-section { display:none; }
+.page-section.active { display:block; }
+
+/* HOME */
+.home-wrap { min-height:100vh; background:#f5f5f3; color:#111; padding-top:90px; }
+.about-hero { text-align:center; padding:60px 10% 20px; }
+.about-tag { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#999; margin-bottom:16px; }
+.about-hero h1 { font-size:clamp(38px,5vw,64px); font-weight:800; line-height:1.1; color:#111; max-width:680px; margin:0 auto 16px; }
+.about-sub { font-size:14px; color:#888; letter-spacing:1px; }
+.team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:50px 8% 0; align-items:end; }
+.team-card { background:#e8e8e4; border-radius:20px; overflow:hidden; position:relative; cursor:pointer; transition:transform 0.3s ease; }
+.team-card:hover { transform:translateY(-6px); }
+.team-card.tall { margin-top:-30px; }
+.team-card img { width:100%; height:320px; object-fit:cover; object-position:top; display:block; }
+.team-card-num { position:absolute; bottom:70px; left:16px; background:rgba(255,255,255,0.85); backdrop-filter:blur(6px); color:#111; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; letter-spacing:1px; }
+.team-card-info { padding:14px 16px 18px; background:#e8e8e4; }
+.team-card-info h3 { font-size:14px; font-weight:700; color:#111; margin-bottom:4px; }
+.team-card-info p { font-size:12px; color:#666; line-height:1.5; }
+.services-section { padding:70px 8% 60px; background:#f5f5f3; }
+.services-tag { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#999; margin-bottom:12px; }
+.services-section h2 { font-size:clamp(28px,4vw,44px); font-weight:800; color:#111; margin-bottom:40px; max-width:500px; line-height:1.2; }
+.services-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.service-card { background:white; border-radius:18px; padding:28px 22px; transition:transform 0.3s,box-shadow 0.3s; }
+.service-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,0.08); }
+.service-icon { font-size:28px; margin-bottom:16px; display:block; }
+.service-card h4 { font-size:14px; font-weight:700; color:#111; margin-bottom:8px; }
+.service-card p { font-size:12px; color:#888; line-height:1.6; }
+.skills-strip { background:#111; padding:40px 8%; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.skills-strip-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#555; margin-right:8px; }
+.skill-pill { background:#1a1a1a; border:1px solid #2a2a2a; padding:8px 16px; border-radius:100px; font-size:12px; color:#aaa; }
+.stats-row { background:#0d0d0d; display:grid; grid-template-columns:repeat(4,1fr); padding:40px 8%; border-top:1px solid #1a1a1a; }
+.stat-item { text-align:center; padding:10px; }
+.stat-item .num { font-size:36px; font-weight:800; letter-spacing:-1px; background:linear-gradient(135deg,#fff 60%,#555); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.stat-item .lbl { font-size:11px; color:#555; text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+
+/* ═══ EMAIL PAGE ═══ */
+.email-page { background:#050505; padding-top:90px; }
+
+/* HERO BANNER */
+.email-hero { padding:70px 10% 60px; border-bottom:1px solid #111; }
+.email-hero-tag { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#555; margin-bottom:20px; }
+.email-hero h1 { font-size:clamp(36px,5vw,62px); font-weight:800; line-height:1.1; max-width:800px; margin-bottom:24px; }
+.email-hero h1 em { font-style:normal; color:#888; }
+.email-hero-sub { font-size:15px; color:#666; line-height:1.8; max-width:640px; margin-bottom:48px; }
+
+/* BIG STATS */
+.email-big-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:#111; border:1px solid #111; border-radius:20px; overflow:hidden; margin-bottom:80px; }
+.email-stat { background:#0a0a0a; padding:36px 28px; }
+.email-stat-num { font-size:48px; font-weight:800; letter-spacing:-2px; background:linear-gradient(135deg,#ffffff,#444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:8px; }
+.email-stat-label { font-size:12px; color:#555; text-transform:uppercase; letter-spacing:1px; line-height:1.5; }
+
+/* STRATEGY SECTION */
+.strategy-section { padding:0 10% 80px; }
+.strategy-header { display:flex; align-items:baseline; gap:16px; margin-bottom:50px; }
+.strategy-header h2 { font-size:32px; font-weight:700; }
+.strategy-header span { font-size:12px; color:#444; letter-spacing:2px; text-transform:uppercase; }
+
+.strategy-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:60px; }
+.strategy-card { background:#0a0a0a; border:1px solid #141414; border-radius:20px; padding:36px; transition:border-color 0.3s,transform 0.3s; }
+.strategy-card:hover { border-color:#2a2a2a; transform:translateY(-4px); }
+.strategy-card-num { font-size:11px; letter-spacing:3px; color:#333; text-transform:uppercase; margin-bottom:20px; }
+.strategy-card h3 { font-size:18px; font-weight:700; margin-bottom:12px; color:#fff; }
+.strategy-card p { font-size:13px; color:#666; line-height:1.8; }
+.strategy-card .tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.strategy-card .tag-row span { background:#111; border:1px solid #1e1e1e; padding:5px 12px; border-radius:20px; font-size:11px; color:#888; }
+
+/* DOMAIN EXPERTISE */
+.domain-section { background:#070707; border-top:1px solid #111; border-bottom:1px solid #111; padding:60px 10%; margin-bottom:80px; }
+.domain-section h2 { font-size:28px; font-weight:700; margin-bottom:8px; }
+.domain-section .domain-sub { font-size:14px; color:#555; margin-bottom:40px; }
+.domain-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:40px; }
+.domain-card { background:#0d0d0d; border:1px solid #161616; border-radius:14px; padding:20px 16px; text-align:center; transition:border-color 0.3s; }
+.domain-card:hover { border-color:#333; }
+.domain-card .d-icon { font-size:22px; margin-bottom:10px; }
+.domain-card .d-label { font-size:11px; color:#666; text-transform:uppercase; letter-spacing:1px; }
+
+/* MARKET EXPERTISE */
+.market-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.market-card { border-radius:20px; padding:36px; position:relative; overflow:hidden; }
+.market-card.us { background:linear-gradient(135deg,#0d1117 0%,#0a1628 100%); border:1px solid #1a2a4a; }
+.market-card.uk { background:linear-gradient(135deg,#0d0d17 0%,#160a28 100%); border:1px solid #2a1a4a; }
+.market-flag { font-size:32px; margin-bottom:16px; display:block; }
+.market-card h3 { font-size:20px; font-weight:700; margin-bottom:10px; }
+.market-card p { font-size:13px; line-height:1.8; color:#888; }
+.market-card .market-badge { display:inline-block; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); padding:6px 14px; border-radius:20px; font-size:11px; color:#aaa; margin-top:16px; margin-right:8px; }
+
+/* VOLUME STRIP */
+.volume-strip { background:linear-gradient(90deg,#0a0a0a,#111,#0a0a0a); border-top:1px solid #161616; border-bottom:1px solid #161616; padding:50px 10%; display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:80px; }
+.volume-main { }
+.volume-num { font-size:72px; font-weight:900; letter-spacing:-3px; background:linear-gradient(135deg,#fff 40%,#444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; }
+.volume-label { font-size:13px; color:#555; text-transform:uppercase; letter-spacing:2px; margin-top:6px; }
+.volume-desc { max-width:460px; }
+.volume-desc p { font-size:15px; color:#777; line-height:1.8; }
+.volume-desc strong { color:#ccc; }
+
+/* GALLERY */
+.gallery-section { padding:0 10% 100px; }
+.gallery-section-header { display:flex; align-items:baseline; gap:16px; margin-bottom:36px; }
+.gallery-section-header h2 { font-size:28px; font-weight:700; }
+.gallery-section-header span { font-size:12px; color:#444; letter-spacing:2px; text-transform:uppercase; }
+.gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.gallery-thumb { position:relative; border-radius:14px; overflow:hidden; cursor:pointer; aspect-ratio:4/3; background:#0f0f0f; transition:transform 0.3s ease,box-shadow 0.3s ease; }
+.gallery-thumb:hover { transform:translateY(-5px); box-shadow:0 18px 40px rgba(255,255,255,0.06); }
+.gallery-thumb img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s ease; }
+.gallery-thumb:hover img { transform:scale(1.04); }
+.gallery-thumb .overlay { position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s; }
+.gallery-thumb:hover .overlay { opacity:1; }
+.overlay span { color:white; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; border:1px solid rgba(255,255,255,0.45); padding:9px 20px; border-radius:30px; }
+
+/* OTHER PAGES */
+.section { padding:100px 10%; }
+.section-header { display:flex; align-items:baseline; gap:16px; margin-bottom:50px; }
+.section-header h2 { font-size:32px; font-weight:700; }
+.section-header span { font-size:13px; color:#555; letter-spacing:1px; text-transform:uppercase; }
+.graphic-grid { columns:3; column-gap:14px; }
+.graphic-thumb { position:relative; border-radius:14px; overflow:hidden; cursor:pointer; margin-bottom:14px; break-inside:avoid; background:#0f0f0f; transition:transform 0.3s ease,box-shadow 0.3s ease; }
+.graphic-thumb:hover { transform:translateY(-5px); box-shadow:0 16px 36px rgba(255,255,255,0.06); }
+.graphic-thumb img { width:100%; display:block; transition:transform 0.4s ease; }
+.graphic-thumb:hover img { transform:scale(1.03); }
+.graphic-thumb .overlay { position:absolute; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s; }
+.graphic-thumb:hover .overlay { opacity:1; }
+.graphic-stats { display:flex; gap:40px; flex-wrap:wrap; margin-top:60px; padding-top:48px; border-top:1px solid #151515; }
+.stat { flex:1; min-width:140px; }
+.stat-number { font-size:40px; font-weight:700; letter-spacing:-1px; background:linear-gradient(135deg,#fff 60%,#555); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.stat-label { font-size:12px; opacity:0.4; margin-top:6px; text-transform:uppercase; letter-spacing:0.5px; line-height:1.5; }
+.exp-card { background:#0d0d0d; border:1px solid #1a1a1a; border-radius:16px; padding:28px; margin-bottom:16px; }
+.exp-title { font-weight:700; font-size:15px; margin-bottom:6px; }
+.exp-company { font-size:12px; color:#555; margin-bottom:14px; }
+.exp-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.exp-list li { font-size:13px; color:#aaa; padding-left:16px; position:relative; }
+.exp-list li::before { content:'—'; position:absolute; left:0; color:#444; }
+
+/* LIGHTBOX */
+.lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.93); z-index:1000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
+.lightbox.active { opacity:1; pointer-events:all; }
+.lightbox-inner { position:relative; max-width:90vw; max-height:90vh; transform:scale(0.93); transition:transform 0.3s ease; }
+.lightbox.active .lightbox-inner { transform:scale(1); }
+.lightbox-inner img { max-width:85vw; max-height:85vh; border-radius:14px; display:block; object-fit:contain; }
+.lightbox-close { position:absolute; top:-14px; right:-14px; width:38px; height:38px; border-radius:50%; background:#1a1a1a; border:none; color:white; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.lightbox-close:hover { background:#333; }
+.lightbox-nav { position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; background:rgba(255,255,255,0.08); border:none; border-radius:50%; color:white; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+.lightbox-nav:hover { background:rgba(255,255,255,0.18); }
+.lightbox-prev { left:-58px; }
+.lightbox-next { right:-58px; }
+.lightbox-counter { text-align:center; margin-top:12px; font-size:12px; opacity:0.4; letter-spacing:1px; }
+
+.fade-up { opacity:0; transform:translateY(50px); transition:opacity 0.6s ease,transform 0.6s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">Sadiq</div>
+  <div class="nav-center">
+    <a href="#" onclick="showPage('home',this)" class="active">Home</a>
+    <a href="#" onclick="showPage('email',this)">Email</a>
+    <a href="#" onclick="showPage('uiux',this)">UI/UX</a>
+    <a href="#" onclick="showPage('graphic',this)">Graphic</a>
+    <a href="#" onclick="showPage('web',this)">Web</a>
+  </div>
+  <button class="menu-btn" onclick="openMenu()">&#9776;</button>
+</nav>
+
+<div class="menu-panel" id="menuPanel">
+  <button class="close-btn" onclick="closeMenu()">&#10005;</button>
+  <div class="menu-links">
+    <a href="#" onclick="showPage('home',null);closeMenu()">Home</a>
+    <a href="#" onclick="showPage('email',null);closeMenu()">Email</a>
+    <a href="#" onclick="showPage('uiux',null);closeMenu()">UI/UX</a>
+    <a href="#" onclick="showPage('graphic',null);closeMenu()">Graphic</a>
+    <a href="#" onclick="showPage('web',null);closeMenu()">Web</a>
+    <a href="/resume.pdf" download>Resume</a>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="page-section active" id="page-home">
+  <div class="home-wrap">
+    <div class="about-hero fade-up">
+      <div class="about-tag">About</div>
+      <h1>The creative force behind great digital work.</h1>
+      <p class="about-sub">Front-End & Email Developer · UI/UX Designer · Graphic & Web</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card fade-up" style="transition-delay:0.05s">
+        <img src="https://shaik-sadiq29.github.io/email-assets/images/1.jpg" alt="Email"/>
+        <div class="team-card-num">01</div>
+        <div class="team-card-info"><h3>Email Development</h3><p>Responsive, cross-client HTML emails built for Gmail, Outlook & Yahoo — deployed via Salesforce & Netcore.</p></div>
+      </div>
+      <div class="team-card tall fade-up" style="transition-delay:0.12s">
+        <img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-1.jpg" alt="UI/UX"/>
+        <div class="team-card-num">02</div>
+        <div class="team-card-info"><h3>UI/UX Design</h3><p>Landing pages, user flows & wireframes — turning ideas into clean, conversion-focused interfaces.</p></div>
+      </div>
+      <div class="team-card fade-up" style="transition-delay:0.19s">
+        <img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-1.jpg" alt="Graphic"/>
+        <div class="team-card-num">03</div>
+        <div class="team-card-info"><h3>Graphic & Web Design</h3><p>200+ social media creatives, branding, brochures, pitch decks & responsive web builds.</p></div>
+      </div>
+    </div>
+    <div class="services-section">
+      <div class="services-tag fade-up">Services</div>
+      <h2 class="fade-up" style="transition-delay:0.05s">What I bring<br/>to the table.</h2>
+      <div class="services-grid">
+        <div class="service-card fade-up" style="transition-delay:0.05s"><span class="service-icon">✉️</span><h4>Email Developer</h4><p>Table-based HTML, MJML, cross-client testing. Campaigns via Salesforce & Netcore.</p></div>
+        <div class="service-card fade-up" style="transition-delay:0.1s"><span class="service-icon">🎨</span><h4>UI/UX Design</h4><p>Figma wireframes, user flows, responsive layouts converted to pixel-perfect code.</p></div>
+        <div class="service-card fade-up" style="transition-delay:0.15s"><span class="service-icon">🖼️</span><h4>Graphic Design</h4><p>Logos, branding, social media creatives, brochures, one pagers & pitch decks.</p></div>
+        <div class="service-card fade-up" style="transition-delay:0.2s"><span class="service-icon">💻</span><h4>Web Developer</h4><p>Landing pages & UI components using HTML, CSS, Bootstrap, JavaScript & React.</p></div>
+      </div>
+    </div>
+    <div class="skills-strip">
+      <span class="skills-strip-label">Skills</span>
+      <span class="skill-pill">HTML5</span><span class="skill-pill">CSS3</span><span class="skill-pill">MJML</span><span class="skill-pill">Bootstrap</span><span class="skill-pill">JavaScript</span><span class="skill-pill">React</span><span class="skill-pill">Figma</span><span class="skill-pill">Photoshop</span><span class="skill-pill">Salesforce</span><span class="skill-pill">Netcore</span><span class="skill-pill">Mailchimp</span><span class="skill-pill">Litmus</span>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="num">3+</div><div class="lbl">Years Experience</div></div>
+      <div class="stat-item"><div class="num">200+</div><div class="lbl">Creatives Made</div></div>
+      <div class="stat-item"><div class="num">4</div><div class="lbl">Companies</div></div>
+      <div class="stat-item"><div class="num">100%</div><div class="lbl">Render Consistency</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL PAGE -->
+<div class="page-section" id="page-email">
+  <div class="email-page">
+
+    <!-- HERO -->
+    <div class="email-hero">
+      <div class="fade-up"><div class="email-hero-tag">Email Development & Strategy</div></div>
+      <div class="fade-up" style="transition-delay:0.08s">
+        <h1>Not just emails.<br/><em>Revenue-driving</em><br/>inbox experiences.</h1>
+      </div>
+      <div class="fade-up" style="transition-delay:0.16s">
+        <p class="email-hero-sub">I don't just code emails — I architect full-scale email programs. From domain infrastructure and deliverability engineering to high-volume campaign execution, I bring end-to-end ownership that most developers simply can't offer.</p>
+      </div>
+    </div>
+     <!-- GALLERY -->
+    <div style="padding-top: 20px;" class="gallery-section">
+      <div class="gallery-section-header fade-up">
+        <h2>Email Work</h2>
+        <span>Campaign Designs</span>
+      </div>
+      <div class="gallery-grid fade-up" style="transition-delay:0.1s">
+        <div class="gallery-thumb" onclick="openLightbox('email',0)"><img src="https://shaik-sadiq29.github.io/email-assets/images/1.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+        <div class="gallery-thumb" onclick="openLightbox('email',1)"><img src="https://shaik-sadiq29.github.io/email-assets/images/2.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+        <div class="gallery-thumb" onclick="openLightbox('email',2)"><img src="https://shaik-sadiq29.github.io/email-assets/images/3.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+        <div class="gallery-thumb" onclick="openLightbox('email',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/4.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+        <div class="gallery-thumb" onclick="openLightbox('email',4)"><img src="https://shaik-sadiq29.github.io/email-assets/images/5.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+        <div class="gallery-thumb" onclick="openLightbox('email',5)"><img src="https://shaik-sadiq29.github.io/email-assets/images/6.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+      </div>
+    </div>
+
+    <!-- BIG STATS -->
+    <div style="padding:60px 10% 0;">
+      <div class="email-big-stats fade-up">
+        <div class="email-stat">
+          <div class="email-stat-num">30L+</div>
+          <div class="email-stat-label">Emails pushed<br/>every single day</div>
+        </div>
+        <div class="email-stat">
+          <div class="email-stat-num">10</div>
+          <div class="email-stat-label">Domains built<br/>from scratch</div>
+        </div>
+        <div class="email-stat">
+          <div class="email-stat-num">2</div>
+          <div class="email-stat-label">Markets mastered<br/>US & UK</div>
+        </div>
+        <div class="email-stat">
+          <div class="email-stat-num">100%</div>
+          <div class="email-stat-label">Inbox rendering<br/>consistency</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRATEGY -->
+    <div class="strategy-section" style="padding-top:80px;">
+      <div class="strategy-header fade-up">
+        <h2>Strategy & Approach</h2>
+        <span>How I work</span>
+      </div>
+      <div class="strategy-grid">
+        <div class="strategy-card fade-up" style="transition-delay:0.05s">
+          <div class="strategy-card-num">01 — Infrastructure</div>
+          <h3>Domain Architecture Built to Deliver</h3>
+          <p>I've built 10 sending domains entirely from scratch — handling DNS configuration, SPF, DKIM, DMARC setup, subdomain structuring, and IP warm-up strategies. Every domain is engineered for long-term inbox placement, not short-term blasts.</p>
+          <div class="tag-row">
+            <span>SPF / DKIM / DMARC</span><span>IP Warm-up</span><span>DNS Config</span><span>Subdomain Strategy</span>
+          </div>
+        </div>
+        <div class="strategy-card fade-up" style="transition-delay:0.1s">
+          <div class="strategy-card-num">02 — Platforms</div>
+          <h3>Salesforce & Netcore — Deep Expertise</h3>
+          <p>I work natively inside Salesforce Marketing Cloud and Netcore — not just sending campaigns, but building automation journeys, audience segmentation, suppression lists, and real-time trigger flows that drive measurable engagement.</p>
+          <div class="tag-row">
+            <span>Salesforce MC</span><span>Netcore</span><span>Automation</span><span>Segmentation</span>
+          </div>
+        </div>
+        <div class="strategy-card fade-up" style="transition-delay:0.15s">
+          <div class="strategy-card-num">03 — Volume</div>
+          <h3>30 Lakh Emails. Every Day. No Excuses.</h3>
+          <p>High-volume email is a different game — throttling, bounce management, reputation monitoring, and deliverability health checks are daily disciplines. I've operated at 3 million sends per day while maintaining sender reputation and open rates.</p>
+          <div class="tag-row">
+            <span>3M Daily Volume</span><span>Bounce Management</span><span>Reputation Monitoring</span>
+          </div>
+        </div>
+        <div class="strategy-card fade-up" style="transition-delay:0.2s">
+          <div class="strategy-card-num">04 — Development</div>
+          <h3>Pixel-Perfect HTML Across Every Client</h3>
+          <p>Every email is hand-coded using table-based HTML and MJML — tested across Gmail, Outlook 2016–2021, Apple Mail, Yahoo, and mobile clients. I use Litmus and Email on Acid to guarantee rendering consistency before a single send.</p>
+          <div class="tag-row">
+            <span>Table-based HTML</span><span>MJML</span><span>Litmus</span><span>Email on Acid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMAIN EXPERTISE -->
+    <div class="domain-section">
+      <div class="fade-up"><h2>Domain Expertise</h2></div>
+      <div class="fade-up" style="transition-delay:0.05s"><p class="domain-sub">10 domains built from zero — each configured, warmed, and maintained for maximum deliverability.</p></div>
+      <div class="domain-grid fade-up" style="transition-delay:0.1s">
+        <div class="domain-card"><div class="d-icon">🏗️</div><div class="d-label">Domain Setup</div></div>
+        <div class="domain-card"><div class="d-icon">🔐</div><div class="d-label">SPF / DKIM</div></div>
+        <div class="domain-card"><div class="d-icon">🛡️</div><div class="d-label">DMARC Policy</div></div>
+        <div class="domain-card"><div class="d-icon">🌡️</div><div class="d-label">IP Warm-up</div></div>
+        <div class="domain-card"><div class="d-icon">📊</div><div class="d-label">Reputation Score</div></div>
+        <div class="domain-card"><div class="d-icon">📬</div><div class="d-label">Inbox Placement</div></div>
+        <div class="domain-card"><div class="d-icon">🚫</div><div class="d-label">Bounce Control</div></div>
+        <div class="domain-card"><div class="d-icon">🔄</div><div class="d-label">Suppression Lists</div></div>
+        <div class="domain-card"><div class="d-icon">📡</div><div class="d-label">Subdomain Routing</div></div>
+        <div class="domain-card"><div class="d-icon">⚡</div><div class="d-label">High Volume</div></div>
+      </div>
+
+      <!-- MARKET EXPERTISE -->
+      <div class="market-row fade-up" style="transition-delay:0.15s">
+        <div class="market-card us">
+          <span class="market-flag">🇺🇸</span>
+          <h3>US Market</h3>
+          <p>Deep understanding of US audience behaviour, CAN-SPAM compliance, peak send-time optimisation, and ISP-specific deliverability rules for Gmail, Yahoo, and Outlook.com at scale.</p>
+          <span class="market-badge">CAN-SPAM Compliant</span>
+          <span class="market-badge">ISP Optimised</span>
+          <span class="market-badge">Timezone Targeting</span>
+        </div>
+        <div class="market-card uk">
+          <span class="market-flag">🇬🇧</span>
+          <h3>UK Market</h3>
+          <p>Experienced in UK-specific email regulations including GDPR and PECR, audience segmentation for UK consumer behaviour, and deliverability tuning for BT, Sky, and Virgin Media ISPs.</p>
+          <span class="market-badge">GDPR / PECR</span>
+          <span class="market-badge">UK ISP Tuned</span>
+          <span class="market-badge">Consent-first</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOLUME STRIP -->
+    <div class="volume-strip fade-up">
+      <div class="volume-main">
+        <div class="volume-num">30L</div>
+        <div class="volume-label">Emails sent daily</div>
+      </div>
+      <div class="volume-desc">
+        <p>Operating at <strong>3 million sends per day</strong> requires more than just a tool — it demands deep technical knowledge of sending infrastructure, deliverability health, and real-time monitoring. That's the standard I work at, every day.</p>
+      </div>
+    </div>
+
+   
+
+  </div>
+</div>
+
+<!-- UI/UX -->
+<div class="page-section" id="page-uiux">
+  <section class="section">
+    <div class="fade-up"><div class="section-header"><h2>UI/UX Design</h2><span>Interfaces & User Flows</span></div></div>
+    <div class="gallery-grid fade-up" style="transition-delay:0.1s">
+      <div class="gallery-thumb" onclick="openLightbox('uiux',0)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-1.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+      <div class="gallery-thumb" onclick="openLightbox('uiux',1)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-2.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+      <div class="gallery-thumb" onclick="openLightbox('uiux',2)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-3.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+      <div class="gallery-thumb" onclick="openLightbox('uiux',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-5.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+      <div class="gallery-thumb" onclick="openLightbox('uiux',4)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-4.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+      <div class="gallery-thumb" onclick="openLightbox('uiux',5)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-6.jpg" loading="lazy" alt=""/><div class="overlay"><span>View</span></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- GRAPHIC -->
+<!-- GRAPHIC PAGE -->
+<div class="page-section" id="page-graphic">
+  <div class="email-page"> <!-- Using email-page class for consistent styling -->
+
+    <!-- HERO -->
+    <div class="email-hero">
+      <div class="fade-up"><div class="email-hero-tag">Graphic Design Experience</div></div>
+      <div class="fade-up" style="transition-delay:0.08s">
+        <h1>Visually compelling.<br/><em>Performance-driven</em><br/>design solutions.</h1>
+      </div>
+      <div class="fade-up" style="transition-delay:0.16s">
+        <p class="email-hero-sub">I bring hands-on experience across multiple industries, creating designs tailored to business goals. My work isn’t just about aesthetics—it’s about communication, engagement, and measurable results.</p>
+      </div>
+    </div>
+
+    <!-- BIG STATS (Highlighted Numbers) -->
+    <div style="padding:0 10% 60px;">
+      <div class="email-big-stats fade-up">
+        <div class="email-stat">
+          <div class="email-stat-num">200+</div>
+          <div class="email-stat-label">Social Media<br/>Creatives</div>
+        </div>
+        <div class="email-stat">
+          <div class="email-stat-num">10+</div>
+          <div class="email-stat-label">Brand Identities<br/>& Logos</div>
+        </div>
+        <div class="email-stat">
+          <div class="email-stat-num">20+</div>
+          <div class="email-stat-label">Brochures &<br/>Digital Flyers</div>
+        </div>
+        <div class="email-stat">
+          <div class="email-stat-num">100%</div>
+          <div class="email-stat-label">Conversion-Focused<br/>Design Approach</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMAIN EXPERTISE (Industries) -->
+    <div class="domain-section">
+      <div class="fade-up"><h2>Industry Exposure</h2></div>
+      <div class="fade-up" style="transition-delay:0.05s"><p class="domain-sub">This diverse exposure helps me understand audience behaviors and craft designs that connect.</p></div>
+      <div class="domain-grid fade-up" style="transition-delay:0.1s">
+        <div class="domain-card"><div class="d-icon">🏠</div><div class="d-label">Real Estate</div></div>
+        <div class="domain-card"><div class="d-icon">💻</div><div class="d-label">IT Services</div></div>
+        <div class="domain-card"><div class="d-icon">🏥</div><div class="d-label">Healthcare</div></div>
+        <div class="domain-card"><div class="d-icon">⚙️</div><div class="d-label">MSP</div></div>
+        <div class="domain-card"><div class="d-icon">☁️</div><div class="d-label">Cloud Services</div></div>
+        <div class="domain-card"><div class="d-icon">🍔</div><div class="d-label">Food & Beverage</div></div>
+      </div>
+    </div>
+
+    <!-- STRATEGY / APPROACH -->
+    <div class="strategy-section">
+      <div class="strategy-header fade-up">
+        <h2>Approach & Impact</h2>
+        <span>Strategic Execution</span>
+      </div>
+      <div class="strategy-grid">
+        <div class="strategy-card fade-up" style="transition-delay:0.05s">
+          <div class="strategy-card-num">01 — The Strategy</div>
+          <h3>Conversion-Focused Design</h3>
+          <p>Every design is aligned with business goals—whether it’s increasing engagement, generating leads, or building brand presence. I focus on scroll-stopping concepts and marketing performance.</p>
+          <div class="tag-row">
+            <span>Brand Tone</span><span>Target Audience</span><span>Marketing ROI</span>
+          </div>
+        </div>
+        <div class="strategy-card fade-up" style="transition-delay:0.1s">
+          <div class="strategy-card-num">02 — Deliverables</div>
+          <h3>Multi-Platform Assets</h3>
+          <p>From high-converting Meta and Google Ad visuals to consistent visual identities and print-ready brochures, I handle bulk creative production without compromising on quality.</p>
+          <div class="tag-row">
+            <span>Paid Ads</span><span>Print Media</span><span>Bulk Production</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="gallery-section">
+      <div class="gallery-section-header fade-up">
+        <h2>Design Portfolio</h2>
+        <span>Featured Creatives</span>
+      </div>
+      <div class="graphic-grid fade-up" style="transition-delay:0.1s">
+        <!-- Re-using your existing gallery image logic -->
+        <div class="graphic-thumb" onclick="openLightbox('graphic',0)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-1.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',1)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-2.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',2)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-3.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-4.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-5.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-6.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+     
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-7.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-8.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-9.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-10.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-11.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+       
+        
+         <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-12.webp" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic%2013.webp" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+    
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic%2015.png" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',14)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-16.jpg" loading="lazy"/><div class="overlay"><span>View</span></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WEB -->
+<div class="page-section" id="page-web">
+  <section class="section">
+    <div class="fade-up"><div class="section-header"><h2>Web Development</h2><span>Experience & Timeline</span></div></div>
+    <div class="fade-up" style="transition-delay:0.1s">
+      <div class="exp-card"><div class="exp-title">Web & Email Developer</div><div class="exp-company">Think Wide Web · 2024–2026</div><ul class="exp-list"><li>Responsive HTML emails for Gmail, Outlook & Yahoo</li><li>Campaign deployment via Salesforce & Netcore</li><li>Cross-client testing — 100% rendering consistency</li></ul></div>
+      <div class="exp-card"><div class="exp-title">UI/UX & Web Designer</div><div class="exp-company">Raising 100X · 2024</div><ul class="exp-list"><li>Landing pages and UI components</li><li>User flows, wireframes & responsive layouts</li></ul></div>
+      <div class="exp-card"><div class="exp-title">Creative Graphic & UI Designer</div><div class="exp-company">The Go-To Guy Agency · 2023–2024</div><ul class="exp-list"><li>Built landing pages with HTML, CSS & Bootstrap</li><li>Mailchimp campaigns & template customization</li></ul></div>
+      <div class="exp-card"><div class="exp-title">Graphic Designer (Transition to Web)</div><div class="exp-company">Inlife Pharma · 2022–2023</div><ul class="exp-list"><li>Digital assets for web and email campaigns</li><li>Product UI visuals with dev team</li></ul></div>
+    </div>
+  </section>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
+    <button class="lightbox-nav lightbox-prev" onclick="prevImage(event)">&#8592;</button>
+    <button class="lightbox-nav lightbox-next" onclick="nextImage(event)">&#8594;</button>
+    <img id="lightboxImg" src="" alt="Preview"/>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+</div>
+
+<script>
+const galleries={
+  email:["https://shaik-sadiq29.github.io/email-assets/images/1.jpg","https://shaik-sadiq29.github.io/email-assets/images/2.jpg","https://shaik-sadiq29.github.io/email-assets/images/3.jpg","https://shaik-sadiq29.github.io/email-assets/images/4.jpg","https://shaik-sadiq29.github.io/email-assets/images/5.jpg","https://shaik-sadiq29.github.io/email-assets/images/6.jpg"],
+  uiux:["https://shaik-sadiq29.github.io/email-assets/images/uiux-1.jpg","https://shaik-sadiq29.github.io/email-assets/images/uiux-2.jpg","https://shaik-sadiq29.github.io/email-assets/images/uiux-3.jpg","https://shaik-sadiq29.github.io/email-assets/images/a/uiux-4.jpg","https://shaik-sadiq29.github.io/email-assets/images/uiux-5.jpg","https://shaik-sadiq29.github.io/email-assets/images/uiux-6.jpg"],
+  graphic:["https://shaik-sadiq29.github.io/email-assets/images/graphic-1.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-2.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-3.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-4.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-5.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-6.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-7.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-8.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-9.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-10.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-11.jpg","https://shaik-sadiq29.github.io/email-assets/images/graphic-12.webp","https://shaik-sadiq29.github.io/email-assets/images/graphic%2013.webp","https://shaik-sadiq29.github.io/email-assets/images/graphic%2015.png","https://shaik-sadiq29.github.io/email-assets/images/graphic-16.jpg"]
+};
+let activeGallery='email',current=0;
+function showPage(name,linkEl){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-center a').forEach(a=>a.classList.remove('active'));
+  if(linkEl) linkEl.classList.add('active');
+  window.scrollTo(0,0);
+  setTimeout(()=>{ document.querySelectorAll('#page-'+name+' .fade-up').forEach((el,i)=>{ el.classList.remove('visible'); setTimeout(()=>el.classList.add('visible'),i*60); }); },10);
+  return false;
+}
+function openLightbox(g,i){activeGallery=g;current=i;updateLightbox();document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('active');document.body.style.overflow='';}
+function handleLightboxClick(e){if(e.target===document.getElementById('lightbox'))closeLightbox();}
+function prevImage(e){e.stopPropagation();current=(current-1+galleries[activeGallery].length)%galleries[activeGallery].length;updateLightbox();}
+function nextImage(e){e.stopPropagation();current=(current+1)%galleries[activeGallery].length;updateLightbox();}
+function updateLightbox(){const img=document.getElementById('lightboxImg');img.style.opacity=0;setTimeout(()=>{img.src=galleries[activeGallery][current];img.style.transition='opacity 0.25s';img.style.opacity=1;},120);document.getElementById('lightboxCounter').textContent=(current+1)+' / '+galleries[activeGallery].length;}
+document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').classList.contains('active'))return;if(e.key==='ArrowRight')nextImage(e);if(e.key==='ArrowLeft')prevImage(e);if(e.key==='Escape')closeLightbox();});
+function openMenu(){document.getElementById('menuPanel').classList.add('open');}
+function closeMenu(){document.getElementById('menuPanel').classList.remove('open');}
+setTimeout(()=>{document.querySelectorAll('#page-home .fade-up').forEach((el,i)=>{setTimeout(()=>el.classList.add('visible'),i*80);});},100);
+</script>
+</body>
+</html>
