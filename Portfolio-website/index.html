@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        colors: {
+          navy: { 900: '#060B18', 800: '#0C1427', 700: '#121C35', 600: '#1A2444', 500: '#232E52' },
+          indigo: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5', glow: 'rgba(99,102,241,0.15)' },
+          slate: { text: '#F0EEF8', mid: '#8B8FA8', dim: '#4A4E65', border: '#1E2438' },
+        },
+        animation: {
+          'fade-up': 'fadeUp 0.6s ease forwards',
+          'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+          'slide-in': 'slideIn 0.45s cubic-bezier(0.16,1,0.3,1) forwards',
+        },
+      }
+    }
+  }
+
+</script>
+
+</head>
+<body>
+    <!-- Ambient spotlight -->
+<!-- Navbar Wrapper -->
+<div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-[900px]">
+
+  <!-- Navbar -->
+  <nav class="nav-pill rounded-full px-6 py-4 flex items-center">
+
+    <span class="font-black text-lg tracking-tight grad-text-soft whitespace-nowrap">
+   Sadiq Creative Lab
+    </span>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex flex-1 justify-evenly items-center mx-6">
+
+      <button onclick="showPage('home',this)" class="nav-link">Home</button>
+
+      <button onclick="showPage('email',this)" class="nav-link">Email</button>
+
+      <button onclick="showPage('uiux',this)" class="nav-link">UI/UX</button>
+
+      <button onclick="showPage('graphic',this)" class="nav-link">Graphic</button>
+
+      <button onclick="showPage('web',this)" class="nav-link">Experience</button>
+
+      <a href="https://github.com/shaiksadiq-tech/My-Portfolio"
+         target="_blank"
+         class="nav-link">
+         GitHub
+      </a>
+
+    </div>
+
+    <!-- Mobile Hamburger -->
+   <button onclick="toggleMenu()"
+        class="md:hidden ml-auto text-slate-text hover:text-white transition-colors">
+
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+
+    </button>
+
+  </nav>
+
+  <div id="mobileMenu" class="hidden"
+     class="hidden md:hidden fixed top-24 left-4 right-4 z-[9999] rounded-2xl p-5"
+     style="
+       background:#0B1220;
+       border:1px solid rgba(255,255,255,.1);
+       box-shadow:0 20px 50px rgba(0,0,0,.4);
+     ">
+
+    <div class="flex flex-col gap-5 text-center">
+
+      <button onclick="showPage('home',this);closeMenu()">Home</button>
+<button onclick="showPage('email',this);closeMenu()">Email</button>
+<button onclick="showPage('uiux',this);closeMenu()">UI/UX</button>
+<button onclick="showPage('graphic',this);closeMenu()">Graphic</button>
+<button onclick="showPage('web',this);closeMenu()">Experience</button>
+
+<a href="https://github.com/YOUR_USERNAME"
+   target="_blank"
+   onclick="closeMenu()">
+   GitHub
+</a>
+
+    </div>
+
+</div>
+
+</div>
+<!-- MENU PANEL -->
+<div class="menu-panel" id="menuPanel">
+  <button onclick="closeMenu()" class="text-slate-mid hover:text-white transition-colors mb-8 block">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="flex flex-col gap-5 mt-4">
+    <button onclick="showPage('home',null);closeMenu()" class="text-left text-lg font-semibold text-white opacity-70 hover:opacity-100 transition-opacity">Home</button>
+    <button onclick="showPage('email',null);closeMenu()" class="text-left text-lg font-semibold text-white opacity-70 hover:opacity-100 transition-opacity">Email</button>
+    <button onclick="showPage('uiux',null);closeMenu()" class="text-left text-lg font-semibold text-white opacity-70 hover:opacity-100 transition-opacity">UI/UX</button>
+    <button onclick="showPage('graphic',null);closeMenu()" class="text-left text-lg font-semibold text-white opacity-70 hover:opacity-100 transition-opacity">Graphic</button>
+    <button onclick="showPage('web',null);closeMenu()" class="text-left text-lg font-semibold text-white opacity-70 hover:opacity-100 transition-opacity">Web</button>
+    <div class="section-divider my-2"></div>
+    <a href="https://shaiksadiq-tech.github.io/My-Portfolio/Updated%20resume/Shaik%20Sadiq-Resume.pdf" download class="text-lg font-semibold opacity-70 hover:opacity-100 transition-opacity" style="color:#6366F1">↓ Resume</a>
+  </div>
+  <div class="absolute bottom-10 left-10">
+    <p class="text-xs text-slate-dim">Email · UI/UX · Graphic · Web</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ HOME ═══════════════════ -->
+<div class="page-section active" id="page-home">
+  <div class="min-h-screen pt-28 pb-0" style="background:linear-gradient(180deg,#060B18 0%,#0C1427 60%,#F5F5F3 60%,#F5F5F3 100%)">
+
+<!-- Hero -->
+<div class="px-6 md:px-16 text-center mb-0">
+
+  <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+       style="background:#DCFCE7;color:#15803D;font-size:14px;font-weight:600;">
+    📍 Dubai, UAE • Available for Opportunities
+  </div>
+
+  <h1 class="reveal reveal-delay-1 font-black mb-3"
+      style="font-size:clamp(48px,7vw,82px);line-height:1.05;letter-spacing:-2px;color:#ffffff;">
+    Hi, I'm
+    <span style="color:#4F46E5;">Sadiq</span>
+  </h1>
+
+ <h3 class="reveal reveal-delay-2 mt-4 font-bold"
+     style="font-size:clamp(16px,3vw,24px);color:#374151;">
+  Affiliate Marketer • Graphic Designer • UI/UX Designer • AI Designer • Vibe Coder
+</h3>
+
+ <p class="reveal reveal-delay-3 mx-auto mt-6"
+   style="max-width:800px;color:#6B7280;font-size:18px;line-height:1.8;">
+  Creative professional with 3+ years of experience in Email Marketing, Graphic Design, UI/UX Design, and AI-powered creative workflows. Passionate about building engaging digital experiences, marketing campaigns, branding assets, and innovative solutions using modern design tools and vibe coding techniques.
+</p>
+
+<div class="reveal reveal-delay-4 flex flex-wrap justify-center gap-5 mt-10 mb-20">
+
+    <a  href="https://shaiksadiq-tech.github.io/My-Portfolio/Updated%20resume/Shaik%20Sadiq-Resume.pdf" target="_blank"
+       class="px-8 py-4 rounded-xl font-semibold transition shadow-sm"
+       style="background:#4F46E5;color:white;text-decoration:none;">
+      Download Resume
+    </a>
+
+    <a href="https://www.behance.net/shaiksadiq01"
+       class="px-8 py-4 rounded-xl font-semibold transition"
+       style="border:2px solid #4F46E5;color:#4F46E5;text-decoration:none;">
+      View Projects
+    </a>
+
+  <a href="tel:+971522945859"
+   class="px-8 py-4 rounded-xl font-semibold transition"
+   style="background:#FFFFFF;border:1px solid #E5E7EB;color:#111827;text-decoration:none;">
+   Contact Me
+</a>
+
+</div>
+
+</div>
+
+    <!-- Cards on the light bg -->
+    <div class="px-4 md:px-8 lg:px-16 pb-0" style="background:#F5F5F3">
+      <div class="team-grid pt-8 pb-12">
+        <div class="reveal bg-white rounded-2xl overflow-hidden shadow-md card-hover cursor-pointer border border-transparent" onclick="showPage('email',null)">
+          <img src="https://shaik-sadiq29.github.io/email-assets/images/1.jpg" alt="Email" class="w-full h-64 object-cover object-top"/>
+          <div class="p-5">
+            <span class="text-xs font-bold tracking-widest text-indigo-500 uppercase">01</span>
+            <h3 class="font-bold text-gray-900 text-base mt-1">Email Development</h3>
+            <p class="text-xs text-gray-500 mt-1 leading-relaxed">Responsive, cross-client HTML emails — deployed via Salesforce & Netcore.</p>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-1 bg-white rounded-2xl overflow-hidden shadow-md card-hover cursor-pointer border border-transparent" onclick="showPage('uiux',null)">
+          <img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-1.jpg" alt="UI/UX" class="w-full h-64 object-cover object-top"/>
+          <div class="p-5">
+            <span class="text-xs font-bold tracking-widest text-indigo-500 uppercase">02</span>
+            <h3 class="font-bold text-gray-900 text-base mt-1">UI/UX Design</h3>
+            <p class="text-xs text-gray-500 mt-1 leading-relaxed">Landing pages, user flows & wireframes — turning ideas into clean interfaces.</p>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2 bg-white rounded-2xl overflow-hidden shadow-md card-hover cursor-pointer border border-transparent" onclick="showPage('graphic',null)">
+          <img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-1.jpg" alt="Graphic" class="w-full h-64 object-cover object-top"/>
+          <div class="p-5">
+            <span class="text-xs font-bold tracking-widest text-indigo-500 uppercase">03</span>
+            <h3 class="font-bold text-gray-900 text-base mt-1">Graphic & Web Design</h3>
+            <p class="text-xs text-gray-500 mt-1 leading-relaxed">200+ social media creatives, branding, brochures & responsive web builds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <div class="px-6 md:px-12 lg:px-20 py-20">
+    <p class="reveal text-xs font-semibold tracking-widest uppercase" style="color:#6366F1">Services</p>
+    <h2 class="reveal reveal-delay-1 font-black mt-3 mb-12 grad-text-soft" style="font-size:clamp(28px,4vw,48px);letter-spacing:-1.5px;line-height:1.1">What I bring<br/>to the table.</h2>
+    <div class="services-grid">
+      <div class="reveal card-hover border rounded-2xl p-7" style="background:#0C1427;border-color:#1E2438">
+        <span class="text-3xl mb-5 block">✉️</span>
+        <h4 class="font-bold text-base mb-2">Email Developer</h4>
+        <p class="text-xs leading-relaxed" style="color:#8B8FA8">Table-based HTML, MJML, cross-client testing. Campaigns via Salesforce & Netcore.</p>
+      </div>
+      <div class="reveal reveal-delay-1 card-hover border rounded-2xl p-7" style="background:#0C1427;border-color:#1E2438">
+        <span class="text-3xl mb-5 block">🎨</span>
+        <h4 class="font-bold text-base mb-2">UI/UX Design</h4>
+        <p class="text-xs leading-relaxed" style="color:#8B8FA8">Figma wireframes, user flows, responsive layouts converted to pixel-perfect code.</p>
+      </div>
+      <div class="reveal reveal-delay-2 card-hover border rounded-2xl p-7" style="background:#0C1427;border-color:#1E2438">
+        <span class="text-3xl mb-5 block">🖼️</span>
+        <h4 class="font-bold text-base mb-2">Graphic Design</h4>
+        <p class="text-xs leading-relaxed" style="color:#8B8FA8">Logos, branding, social media creatives, brochures, one pagers & pitch decks.</p>
+      </div>
+      <div class="reveal reveal-delay-3 card-hover border rounded-2xl p-7" style="background:#0C1427;border-color:#1E2438">
+        <span class="text-3xl mb-5 block">💻</span>
+        <h4 class="font-bold text-base mb-2">Web Developer</h4>
+        <p class="text-xs leading-relaxed" style="color:#8B8FA8">Landing pages & UI components using HTML, CSS, Bootstrap, JavaScript & React.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills Strip -->
+  <div class="section-divider"></div>
+  <div class="px-6 md:px-12 lg:px-20 py-10 flex flex-wrap items-center gap-3">
+    <span class="text-xs font-semibold tracking-widest uppercase mr-3" style="color:#4A4E65">Stack</span>
+    <span class="skill-pill">HTML5</span><span class="skill-pill">CSS3</span><span class="skill-pill">MJML</span><span class="skill-pill">Bootstrap</span><span class="skill-pill">JavaScript</span><span class="skill-pill">React</span><span class="skill-pill">Figma</span><span class="skill-pill">Photoshop</span><span class="skill-pill">Salesforce</span><span class="skill-pill">Netcore</span><span class="skill-pill">Mailchimp</span><span class="skill-pill">Litmus</span>
+  </div>
+  <div class="section-divider"></div>
+
+  <!-- Stats Row -->
+  <div class="stats-grid-4" style="background:#0C1427">
+    <div class="reveal text-center py-10 px-4 border-r" style="border-color:#1E2438">
+      <div class="stat-num grad-text">3+</div>
+      <div class="text-xs mt-2 uppercase tracking-widest" style="color:#4A4E65">Years Experience</div>
+    </div>
+    <div class="reveal reveal-delay-1 text-center py-10 px-4 border-r" style="border-color:#1E2438">
+      <div class="stat-num grad-text">200+</div>
+      <div class="text-xs mt-2 uppercase tracking-widest" style="color:#4A4E65">Creatives Made</div>
+    </div>
+    <div class="reveal reveal-delay-2 text-center py-10 px-4 border-r" style="border-color:#1E2438">
+      <div class="stat-num grad-text">4</div>
+      <div class="text-xs mt-2 uppercase tracking-widest" style="color:#4A4E65">Companies</div>
+    </div>
+    <div class="reveal reveal-delay-3 text-center py-10 px-4">
+      <div class="stat-num grad-text">100%</div>
+      <div class="text-xs mt-2 uppercase tracking-widest" style="color:#4A4E65">Render Consistency</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ EMAIL PAGE ═══════════════════ -->
+<div class="page-section" id="page-email">
+  <div class="pt-28 pb-20">
+
+    <!-- Hero -->
+    <div class="px-6 md:px-12 lg:px-20 pt-12 pb-16 border-b" style="border-color:#1E2438">
+      <p class="reveal text-xs font-semibold tracking-widest uppercase" style="color:#6366F1">Email Development & Strategy</p>
+      <h1 class="reveal reveal-delay-1 font-black mt-4 mb-6 heading-glow" style="font-size:clamp(36px,5vw,68px);line-height:1.05;letter-spacing:-2px">Not just emails.<br/><span style="color:#4A4E65">Revenue-driving</span><br/>inbox experiences.</h1>
+      <p class="reveal reveal-delay-2 text-sm leading-relaxed max-w-xl" style="color:#8B8FA8">I don't just code emails — I architect full-scale email programs. From domain infrastructure and deliverability engineering to high-volume campaign execution, I bring end-to-end ownership that most developers simply can't offer.</p>
+    </div>
+
+    <!-- Gallery -->
+    <div class="px-6 md:px-12 lg:px-20 pt-14">
+      <div class="reveal flex items-baseline gap-4 mb-8">
+        <h2 class="text-2xl font-bold">Email Work</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">Campaign Designs</span>
+      </div>
+      <div class="reveal reveal-delay-1 grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('email',0)"><img src="https://shaik-sadiq29.github.io/email-assets/images/1.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('email',1)"><img src="https://shaik-sadiq29.github.io/email-assets/images/2.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('email',2)"><img src="https://shaik-sadiq29.github.io/email-assets/images/3.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('email',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/4.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('email',4)"><img src="https://shaik-sadiq29.github.io/email-assets/images/5.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('email',5)"><img src="https://shaik-sadiq29.github.io/email-assets/images/6.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+      </div>
+    </div>
+
+    <!-- Big Stats -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16">
+      <div class="reveal big-stats-grid border rounded-2xl overflow-hidden" style="background:#111;border-color:#1E2438">
+        <div style="background:#0C1427" class="p-8 border-r" style="border-color:#1E2438">
+          <div class="stat-num grad-text">30L+</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Emails pushed<br/>every single day</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">10</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Domains built<br/>from scratch</div>
+        </div>
+        <div style="background:#0C1427" class="p-8 border-t md:border-t-0 border-r" style="border-color:#1E2438">
+          <div class="stat-num grad-text">2</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Markets mastered<br/>US & UK</div>
+        </div>
+        <div style="background:#0C1427" class="p-8 border-t md:border-t-0">
+          <div class="stat-num grad-text">100%</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Inbox rendering<br/>consistency</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategy Cards -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16">
+      <div class="reveal flex items-baseline gap-4 mb-10">
+        <h2 class="text-2xl font-bold">Strategy & Approach</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">How I work</span>
+      </div>
+      <div class="two-col">
+        <div class="reveal card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">01 — Infrastructure</div>
+          <h3 class="font-bold text-lg mb-3">Domain Architecture Built to Deliver</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">I've built 10 sending domains entirely from scratch — handling DNS configuration, SPF, DKIM, DMARC setup, subdomain structuring, and IP warm-up strategies engineered for long-term inbox placement.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">SPF / DKIM / DMARC</span><span class="tag">IP Warm-up</span><span class="tag">DNS Config</span></div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">02 — Platforms</div>
+          <h3 class="font-bold text-lg mb-3">Salesforce & Netcore — Deep Expertise</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">I work natively inside Salesforce Marketing Cloud and Netcore — building automation journeys, audience segmentation, suppression lists, and real-time trigger flows that drive measurable engagement.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">Salesforce MC</span><span class="tag">Netcore</span><span class="tag">Automation</span></div>
+        </div>
+        <div class="reveal card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">03 — Volume</div>
+          <h3 class="font-bold text-lg mb-3">30 Lakh Emails. Every Day. No Excuses.</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">High-volume email is a different game — throttling, bounce management, reputation monitoring, and deliverability health checks are daily disciplines. Operating at 3M sends/day while maintaining sender reputation.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">3M Daily Volume</span><span class="tag">Bounce Mgmt</span><span class="tag">Monitoring</span></div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">04 — Development</div>
+          <h3 class="font-bold text-lg mb-3">Pixel-Perfect HTML Across Every Client</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">Every email is hand-coded using table-based HTML and MJML — tested across Gmail, Outlook 2016–2021, Apple Mail, Yahoo, and mobile clients via Litmus and Email on Acid.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">Table HTML</span><span class="tag">MJML</span><span class="tag">Litmus</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Domain expertise -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16 pb-16 mt-16 border-t border-b" style="border-color:#1E2438;background:#0A0E1A">
+      <div class="reveal mb-2"><h2 class="text-2xl font-bold">Domain Expertise</h2></div>
+      <p class="reveal text-sm mb-10" style="color:#4A4E65">10 domains built from zero — each configured, warmed, and maintained for maximum deliverability.</p>
+      <div class="domain-grid reveal mb-10">
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🏗️</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Domain Setup</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🔐</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">SPF / DKIM</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🛡️</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">DMARC Policy</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🌡️</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">IP Warm-up</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">📊</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Reputation Score</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">📬</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Inbox Placement</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🚫</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Bounce Control</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🔄</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Suppression Lists</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">📡</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Subdomain Routing</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">⚡</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">High Volume</div></div>
+      </div>
+      <div class="two-col">
+        <div class="reveal market-us rounded-2xl p-9">
+          <span class="text-3xl block mb-4">🇺🇸</span>
+          <h3 class="font-bold text-xl mb-3">US Market</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">Deep understanding of US audience behaviour, CAN-SPAM compliance, peak send-time optimisation, and ISP-specific deliverability rules for Gmail, Yahoo, and Outlook.com at scale.</p>
+          <div class="flex flex-wrap gap-2 mt-4"><span class="tag">CAN-SPAM</span><span class="tag">ISP Optimised</span><span class="tag">Timezone Targeting</span></div>
+        </div>
+        <div class="reveal reveal-delay-1 market-uk rounded-2xl p-9">
+          <span class="text-3xl block mb-4">🇬🇧</span>
+          <h3 class="font-bold text-xl mb-3">UK Market</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">Experienced in UK-specific email regulations including GDPR and PECR, audience segmentation for UK consumer behaviour, and deliverability tuning for BT, Sky, and Virgin Media ISPs.</p>
+          <div class="flex flex-wrap gap-2 mt-4"><span class="tag">GDPR / PECR</span><span class="tag">UK ISP Tuned</span><span class="tag">Consent-first</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volume Strip -->
+    <div class="reveal vol-strip px-6 md:px-12 lg:px-20 py-16 border-b" style="border-color:#1E2438;background:#0A0E1A">
+      <div>
+        <div class="font-black" style="font-size:clamp(56px,8vw,96px);letter-spacing:-4px;background:linear-gradient(135deg,#fff 40%,#6366F1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1">30L</div>
+        <div class="text-xs uppercase tracking-widest mt-2" style="color:#4A4E65">Emails sent daily</div>
+      </div>
+      <div class="max-w-md text-sm leading-relaxed" style="color:#8B8FA8">Operating at <strong style="color:#ccc">3 million sends per day</strong> requires more than just a tool — it demands deep technical knowledge of sending infrastructure, deliverability health, and real-time monitoring. That's the standard I work at, every day.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ UI/UX PAGE ═══════════════════ -->
+<div class="page-section" id="page-uiux">
+  <div class="pt-28 pb-20">
+
+    <!-- Hero -->
+    <div class="px-6 md:px-12 lg:px-20 pt-12 pb-16 border-b" style="border-color:#1E2438">
+      <p class="reveal text-xs font-semibold tracking-widest uppercase" style="color:#6366F1">UI/UX Design & Web</p>
+      <h1 class="reveal reveal-delay-1 font-black mt-4 mb-6" style="font-size:clamp(36px,5vw,68px);line-height:1.05;letter-spacing:-2px">Interfaces that are<br/><span style="color:#4A4E65">live, real</span> and<br/>built to convert.</h1>
+      <p class="reveal reveal-delay-2 text-sm leading-relaxed max-w-xl" style="color:#8B8FA8">I've designed and built 5 fully live websites across industries — from finance and tech to food and consulting. Each project involved end-to-end UI design, responsive implementation, and user experience thinking that drives real results.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="px-6 md:px-12 lg:px-20 pt-10">
+      <div class="reveal big-stats-grid border rounded-2xl overflow-hidden" style="background:#111;border-color:#1E2438">
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">5</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Live websites<br/>designed & built</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">4+</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Industries<br/>covered</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">100%</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Fully responsive<br/>& mobile-ready</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">3+</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Years of UI/UX<br/>experience</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Websites -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16">
+      <div class="reveal flex items-baseline gap-4 mb-10">
+        <h2 class="text-2xl font-bold">Live Websites</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">Real Projects · Live Now</span>
+      </div>
+      <div class="sites-grid mb-6">
+        <div class="reveal card-hover border rounded-2xl overflow-hidden" style="background:#0C1427;border-color:#1E2438">
+          <div class="site-preview"><iframe src="https://www.thegotoguy.co/" title="The Go-To Guy" scrolling="no" loading="lazy"></iframe><div class="preview-overlay"></div></div>
+          <div class="p-7">
+            <div class="text-xs tracking-widest uppercase mb-3" style="color:#4A4E65">01 — Marketing Agency</div>
+            <h3 class="font-bold text-lg mb-2">The Go-To Guy</h3>
+            <p class="text-sm leading-relaxed mb-4" style="color:#8B8FA8">Full agency website with clean UI, service showcases, and a strong brand identity designed to drive client inquiries through strategic layout and CTA placement.</p>
+            <div class="flex flex-wrap gap-2 mb-4"><span class="tag">UI Design</span><span class="tag">Branding</span><span class="tag">HTML/CSS</span></div>
+            <a href="https://www.thegotoguy.co/" target="_blank" class="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">Visit Live Site ↗</a>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl overflow-hidden" style="background:#0C1427;border-color:#1E2438">
+          <div class="site-preview"><iframe src="https://52scapital.com/" title="52S Capital" scrolling="no" loading="lazy"></iframe><div class="preview-overlay"></div></div>
+          <div class="p-7">
+            <div class="text-xs tracking-widest uppercase mb-3" style="color:#4A4E65">02 — Finance & Investment</div>
+            <h3 class="font-bold text-lg mb-2">52S Capital</h3>
+            <p class="text-sm leading-relaxed mb-4" style="color:#8B8FA8">A high-trust financial services website with a premium, minimal aesthetic designed to build credibility with a sophisticated investor audience.</p>
+            <div class="flex flex-wrap gap-2 mb-4"><span class="tag">Finance UI</span><span class="tag">Trust Design</span><span class="tag">Responsive</span></div>
+            <a href="https://52scapital.com/" target="_blank" class="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">Visit Live Site ↗</a>
+          </div>
+        </div>
+        <div class="reveal card-hover border rounded-2xl overflow-hidden" style="background:#0C1427;border-color:#1E2438">
+          <div class="site-preview"><iframe src="https://www.ctrls.com/" title="Ctrl S" scrolling="no" loading="lazy"></iframe><div class="preview-overlay"></div></div>
+          <div class="p-7">
+            <div class="text-xs tracking-widest uppercase mb-3" style="color:#4A4E65">03 — Cloud & Data Centre</div>
+            <h3 class="font-bold text-lg mb-2">CtrlS Datacenters</h3>
+            <p class="text-sm leading-relaxed mb-4" style="color:#8B8FA8">Enterprise-grade UI for India's largest hyperscale data centre company — structured visual design with clear product hierarchy and scalable components.</p>
+            <div class="flex flex-wrap gap-2 mb-4"><span class="tag">Enterprise UI</span><span class="tag">B2B Design</span><span class="tag">Cloud</span></div>
+            <a href="https://www.ctrls.com/" target="_blank" class="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">Visit Live Site ↗</a>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl overflow-hidden" style="background:#0C1427;border-color:#1E2438">
+          <div class="site-preview"><iframe src="https://www.xanaradvisors.com/" title="Xanar Advisors" scrolling="no" loading="lazy"></iframe><div class="preview-overlay"></div></div>
+          <div class="p-7">
+            <div class="text-xs tracking-widest uppercase mb-3" style="color:#4A4E65">04 — Business Advisory</div>
+            <h3 class="font-bold text-lg mb-2">Xanar Advisors</h3>
+            <p class="text-sm leading-relaxed mb-4" style="color:#8B8FA8">Clean, professional advisory firm website with elegant typography and a clear service narrative to attract high-value business clients.</p>
+            <div class="flex flex-wrap gap-2 mb-4"><span class="tag">Advisory UI</span><span class="tag">Figma</span><span class="tag">Lead Gen</span></div>
+            <a href="https://www.xanaradvisors.com/" target="_blank" class="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">Visit Live Site ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Site 5 full width -->
+      <div class="reveal card-hover border rounded-2xl overflow-hidden mb-16" style="background:#0C1427;border-color:#1E2438">
+        <div class="site5-inner">
+          <div class="site-preview" style="height:260px"><iframe src="https://cheekyfoodcompany.com/" title="Cheeky Food Co" scrolling="no" loading="lazy"></iframe><div class="preview-overlay"></div></div>
+          <div class="p-8 flex flex-col justify-center">
+            <div class="text-xs tracking-widest uppercase mb-3" style="color:#4A4E65">05 — Food & Beverage</div>
+            <h3 class="font-bold text-xl mb-3">Cheeky Food Company</h3>
+            <p class="text-sm leading-relaxed mb-4" style="color:#8B8FA8">A vibrant, personality-driven food brand website. Bold visuals, playful tone, and strong product storytelling to drive customer appetite and online engagement.</p>
+            <div class="flex flex-wrap gap-2 mb-4"><span class="tag">Food & Bev</span><span class="tag">Brand Identity</span><span class="tag">E-commerce UI</span></div>
+            <a href="https://cheekyfoodcompany.com/" target="_blank" class="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">Visit Live Site ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Approach -->
+    <div class="px-6 md:px-12 lg:px-20">
+      <div class="reveal flex items-baseline gap-4 mb-10">
+        <h2 class="text-2xl font-bold">Design Approach</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">How I Think & Build</span>
+      </div>
+      <div class="two-col mb-16">
+        <div class="reveal card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">01 — Research First</div>
+          <h3 class="font-bold text-lg mb-3">Understanding Before Designing</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">Every project starts with understanding the business goal, target audience, and competitive landscape. I translate strategy into visual systems — not just pretty screens.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">User Research</span><span class="tag">Goal Mapping</span></div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">02 — Figma to Code</div>
+          <h3 class="font-bold text-lg mb-3">Designs That Actually Get Built</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">I bridge the gap between design and development. My Figma files are component-driven and developer-ready, and I personally implement designs in clean HTML, CSS and React.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">Figma</span><span class="tag">HTML/CSS</span><span class="tag">React</span></div>
+        </div>
+        <div class="reveal card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">03 — Mobile-First</div>
+          <h3 class="font-bold text-lg mb-3">Responsive Across Every Device</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">All 5 live sites are fully responsive and mobile-optimised. I design and build with a mobile-first mindset, ensuring a seamless experience from 320px to 4K displays.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">Mobile-First</span><span class="tag">Cross-browser</span></div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">04 — Conversion Focused</div>
+          <h3 class="font-bold text-lg mb-3">Design That Drives Action</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">Good UI isn't just about looking clean — it's about guiding users to take action. I focus on CTA placement, visual hierarchy, and user flow to maximise engagement.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">CTA Strategy</span><span class="tag">User Flow</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlight Strip -->
+    <div class="reveal vol-strip px-6 md:px-12 lg:px-20 py-16 border-t border-b" style="border-color:#1E2438;background:#0A0E1A">
+      <div>
+        <div class="font-black" style="font-size:clamp(56px,8vw,96px);letter-spacing:-4px;background:linear-gradient(135deg,#fff 40%,#6366F1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1">5</div>
+        <div class="text-xs uppercase tracking-widest mt-2" style="color:#4A4E65">Websites live today</div>
+      </div>
+      <div class="max-w-md text-sm leading-relaxed" style="color:#8B8FA8">Every site I've worked on is <strong style="color:#ccc">live and running right now</strong> — not mockups, not concepts. Real businesses, real users, real results. That's what separates a portfolio from actual experience.</div>
+    </div>
+
+    <!-- UIUX Gallery -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16">
+      <div class="reveal flex items-baseline gap-4 mb-8">
+        <h2 class="text-2xl font-bold">UI/UX Designs</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">Visual Work</span>
+      </div>
+      <div class="reveal reveal-delay-1 grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('uiux',0)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-1.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('uiux',1)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-2.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('uiux',2)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-3.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('uiux',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-5.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('uiux',4)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-4.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="gallery-thumb aspect-video" onclick="openLightbox('uiux',5)"><img src="https://shaik-sadiq29.github.io/email-assets/images/uiux-6.jpg" loading="lazy" alt=""/><div class="gallery-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ GRAPHIC PAGE ═══════════════════ -->
+<div class="page-section" id="page-graphic">
+  <div class="pt-28 pb-20">
+
+    <div class="px-6 md:px-12 lg:px-20 pt-12 pb-16 border-b" style="border-color:#1E2438">
+      <p class="reveal text-xs font-semibold tracking-widest uppercase" style="color:#6366F1">Graphic Design Experience</p>
+      <h1 class="reveal reveal-delay-1 font-black mt-4 mb-6" style="font-size:clamp(36px,5vw,68px);line-height:1.05;letter-spacing:-2px">Visually compelling.<br/><span style="color:#4A4E65">Performance-driven</span><br/>design solutions.</h1>
+      <p class="reveal reveal-delay-2 text-sm leading-relaxed max-w-xl" style="color:#8B8FA8">Hands-on experience across multiple industries, creating designs tailored to business goals. Not just aesthetics — communication, engagement, and measurable results.</p>
+    </div>
+
+    <div class="px-6 md:px-12 lg:px-20 pt-10">
+      <div class="reveal big-stats-grid border rounded-2xl overflow-hidden" style="background:#111;border-color:#1E2438">
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">200+</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Social Media<br/>Creatives</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">10+</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Brand Identities<br/>& Logos</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">20+</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Brochures &<br/>Digital Flyers</div>
+        </div>
+        <div style="background:#0C1427" class="p-8">
+          <div class="stat-num grad-text">100%</div>
+          <div class="text-xs mt-2 uppercase tracking-wide leading-relaxed" style="color:#4A4E65">Conversion-Focused<br/>Approach</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Industry Exposure -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16 pb-16 mt-8 border-t border-b" style="border-color:#1E2438;background:#0A0E1A">
+      <div class="reveal mb-2"><h2 class="text-2xl font-bold">Industry Exposure</h2></div>
+      <p class="reveal text-sm mb-10" style="color:#4A4E65">Diverse industry exposure helps craft designs that truly connect with the right audience.</p>
+      <div class="domain-grid reveal">
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🏠</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Real Estate</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">💻</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">IT Services</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🏥</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Healthcare</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">⚙️</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">MSP</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">☁️</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Cloud Services</div></div>
+        <div class="card-hover border rounded-xl p-4 text-center" style="background:#0C1427;border-color:#1E2438"><div class="text-xl mb-2">🍔</div><div class="text-xs uppercase tracking-wide" style="color:#4A4E65">Food & Bev</div></div>
+      </div>
+    </div>
+
+    <!-- Approach Cards -->
+    <div class="px-6 md:px-12 lg:px-20 pt-16">
+      <div class="reveal flex items-baseline gap-4 mb-10">
+        <h2 class="text-2xl font-bold">Approach & Impact</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">Strategic Execution</span>
+      </div>
+      <div class="two-col mb-16">
+        <div class="reveal card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">01 — The Strategy</div>
+          <h3 class="font-bold text-lg mb-3">Conversion-Focused Design</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">Every design is aligned with business goals — whether increasing engagement, generating leads, or building brand presence. Scroll-stopping concepts with marketing performance at the core.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">Brand Tone</span><span class="tag">Target Audience</span><span class="tag">Marketing ROI</span></div>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover border rounded-2xl p-9" style="background:#0C1427;border-color:#1E2438">
+          <div class="text-xs tracking-widest uppercase mb-5" style="color:#4A4E65">02 — Deliverables</div>
+          <h3 class="font-bold text-lg mb-3">Multi-Platform Assets</h3>
+          <p class="text-sm leading-relaxed" style="color:#8B8FA8">From high-converting Meta and Google Ad visuals to consistent visual identities and print-ready brochures, I handle bulk creative production without compromising on quality.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="tag">Paid Ads</span><span class="tag">Print Media</span><span class="tag">Bulk Production</span></div>
+        </div>
+      </div>
+
+      <!-- Masonry Gallery -->
+      <div class="reveal flex items-baseline gap-4 mb-8">
+        <h2 class="text-2xl font-bold">Design Portfolio</h2>
+        <span class="text-xs uppercase tracking-widest" style="color:#4A4E65">Featured Creatives</span>
+      </div>
+      <div class="graphic-grid reveal reveal-delay-1">
+        <div class="graphic-thumb" onclick="openLightbox('graphic',0)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-1.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',1)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-2.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',2)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-3.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',3)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-4.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',4)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-5.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',5)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-6.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',6)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-7.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',7)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-8.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',8)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-9.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',9)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-10.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',10)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-11.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',11)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-12.webp" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',12)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic%2013.webp" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',13)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic%2015.png" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+        <div class="graphic-thumb" onclick="openLightbox('graphic',14)"><img src="https://shaik-sadiq29.github.io/email-assets/images/graphic-16.jpg" loading="lazy"/><div class="graphic-overlay"><span class="text-xs uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full">View</span></div></div>
+      </div>
+
+      <!-- Graphic Stats -->
+      <div class="reveal flex flex-wrap gap-10 mt-16 pt-12 border-t" style="border-color:#1E2438">
+        <div><div class="font-bold text-4xl grad-text" style="letter-spacing:-1px">200+</div><div class="text-xs mt-2 uppercase tracking-wide" style="color:#4A4E65">Social Media Creatives</div></div>
+        <div><div class="font-bold text-4xl grad-text" style="letter-spacing:-1px">50+</div><div class="text-xs mt-2 uppercase tracking-wide" style="color:#4A4E65">Branding & Logos</div></div>
+        <div><div class="font-bold text-4xl grad-text" style="letter-spacing:-1px">30+</div><div class="text-xs mt-2 uppercase tracking-wide" style="color:#4A4E65">Brochures & One Pagers</div></div>
+        <div><div class="font-bold text-4xl grad-text" style="letter-spacing:-1px">20+</div><div class="text-xs mt-2 uppercase tracking-wide" style="color:#4A4E65">Pitch Decks</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ WEB PAGE ═══════════════════ -->
+<div class="page-section" id="page-web">
+  <div class="pt-28 pb-24 px-6 md:px-12 lg:px-20">
+
+    <div class="pt-12 mb-12 pb-12 border-b" style="border-color:#1E2438">
+
+      <p class="reveal text-xs font-semibold tracking-widest uppercase mb-4"
+         style="color:#6366F1">
+        Professional Journey
+      </p>
+
+      <h1 class="reveal reveal-delay-1 font-black"
+          style="font-size:clamp(36px,5vw,68px);line-height:1.05;letter-spacing:-2px;color:#ffffff">
+        Experience &
+        <span style="color:#6366F1">Timeline</span>
+      </h1>
+
+      <p class="reveal reveal-delay-2 mt-4 max-w-2xl"
+         style="color:#8B8FA8;font-size:16px;line-height:1.8;">
+        A journey across Email Marketing, Graphic Design, UI/UX Design,
+        Branding, and Digital Experiences helping businesses create
+        impactful campaigns, engaging visuals, and user-focused solutions.
+      </p>
+
+    </div>
+
+    <div class="max-w-3xl flex flex-col gap-6">
+
+      <!-- Think Wide Web -->
+      <div class="reveal exp-card">
+        <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+          <div>
+            <div class="font-bold text-base">Web & Email Developer</div>
+            <div class="text-xs mt-1" style="color:#6366F1">
+              Think Wide Web
+            </div>
+          </div>
+          <span class="tag text-xs">2024 – Present</span>
+        </div>
+
+        <ul class="flex flex-col gap-2">
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Developed responsive HTML email templates for Gmail, Outlook, and Yahoo.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Managed campaign deployment using Salesforce Marketing Cloud and Netcore.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Performed cross-client testing to ensure rendering consistency.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Reduced rendering issues through testing and optimization.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Raising 100X -->
+      <div class="reveal reveal-delay-1 exp-card">
+        <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+          <div>
+            <div class="font-bold text-base">UI/UX & Web Designer</div>
+            <div class="text-xs mt-1" style="color:#6366F1">
+              Raising 100X
+            </div>
+          </div>
+          <span class="tag text-xs">2024</span>
+        </div>
+
+        <ul class="flex flex-col gap-2">
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Designed landing pages, dashboards, and responsive UI components.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Created wireframes, user flows, and modern design systems.
+          </li>
+        </ul>
+      </div>
+
+      <!-- The Go-To Guy -->
+      <div class="reveal reveal-delay-2 exp-card">
+        <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+          <div>
+            <div class="font-bold text-base">Creative Graphic & UI Designer</div>
+            <div class="text-xs mt-1" style="color:#6366F1">
+              The Go-To Guy Agency
+            </div>
+          </div>
+          <span class="tag text-xs">2023 – 2024</span>
+        </div>
+
+        <ul class="flex flex-col gap-2">
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Created branding materials, brochures, and social media creatives.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Managed Mailchimp campaigns and email template customization.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Converted UI designs into responsive website layouts.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Inlife Pharma -->
+      <div class="reveal reveal-delay-3 exp-card">
+        <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+          <div>
+            <div class="font-bold text-base">Graphic Production Designer</div>
+            <div class="text-xs mt-1" style="color:#6366F1">
+              Inlife Pharma
+            </div>
+          </div>
+          <span class="tag text-xs">2022 – 2023</span>
+        </div>
+
+        <ul class="flex flex-col gap-2">
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Designed packaging, labels, product mockups, and e-commerce creatives.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Created marketing assets for Amazon, Flipkart, and FirstCry.
+          </li>
+
+          <li class="text-sm pl-4 relative" style="color:#8B8FA8">
+            <span class="absolute left-0 top-0" style="color:#6366F1">•</span>
+            Collaborated with teams to deliver high-quality B2B design solutions.
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="handleLightboxBg(event)">
+  <div class="lightbox-inner relative">
+    <button class="lb-btn absolute -top-4 -right-4 w-10 h-10" onclick="closeLightbox()">✕</button>
+    <button class="lb-btn absolute left-0 top-1/2 -translate-x-14 -translate-y-1/2 w-11 h-11" onclick="prevImg(event)">←</button>
+    <button class="lb-btn absolute right-0 top-1/2 translate-x-14 -translate-y-1/2 w-11 h-11" onclick="nextImg(event)">→</button>
+    <img id="lbImg" src="" alt="" style="transition:opacity 0.25s"/>
+    <div id="lbCounter" class="text-center mt-3 text-xs tracking-widest" style="color:#4A4E65"></div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
